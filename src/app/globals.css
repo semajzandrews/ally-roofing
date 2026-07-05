@@ -1,0 +1,173 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────
+   ALLY ROOFING & LEAK REPAIR — "The storm ends at your roofline."
+   The page IS the weather: it opens inside the storm and the sky
+   lifts as you scroll — nimbus black → rain blue → clear paper.
+   Type: Panchang (squared technical display) + Supreme (body).
+   Skeleton: storm hero → first-drop roofline moment → severity
+   scale (services as NWS-style warning levels) → proof strip →
+   visit/map (clear sky) → footer.
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  --nimbus: #0d1116;      /* deep storm */
+  --nimbus-2: #161d25;
+  --rain: #33526b;        /* mid-storm blue */
+  --rain-lt: #9fc0d4;     /* lifting sky */
+  --clear: #f4f4f0;       /* after the storm */
+  --ink: #10161c;
+  --ink-2: #3c4a56;
+  --torch: #ff5a1f;       /* emergency CTA — torch orange */
+  --torch-hi: #ff7d4d;
+  --torch-deep: #a63508;
+  --bone: #eef1f3;
+  --bone-dim: #ccd6dd;
+  --line-dark: rgba(238, 241, 243, 0.14);
+  --line-light: rgba(16, 22, 28, 0.14);
+}
+
+@theme inline {
+  --color-nimbus: var(--nimbus);
+  --color-nimbus-2: var(--nimbus-2);
+  --color-rain: var(--rain);
+  --color-rain-lt: var(--rain-lt);
+  --color-clear: var(--clear);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-torch: var(--torch);
+  --color-torch-hi: var(--torch-hi);
+  --color-torch-deep: var(--torch-deep);
+  --color-bone: var(--bone);
+  --color-bone-dim: var(--bone-dim);
+  --font-display: var(--font-panchang);
+  --font-body: var(--font-supreme);
+}
+
+html { background: var(--nimbus); }
+body {
+  font-family: var(--font-supreme), system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--bone);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+h1, h2, h3, .display {
+  font-family: var(--font-panchang), system-ui, sans-serif;
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+}
+::selection { background: var(--torch); color: var(--nimbus); }
+
+/* ─── The Sky (signature): fixed layer behind everything.
+       Its gradient is 500vh tall; JS translates it with scroll
+       so the page literally moves from storm to clear. ─────── */
+.sky {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+.sky-gradient {
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: 500vh;
+  background: linear-gradient(
+    to bottom,
+    var(--nimbus) 0%,
+    var(--nimbus) 18%,
+    #1b2836 34%,
+    var(--rain) 52%,
+    #6f96af 68%,
+    var(--rain-lt) 80%,
+    var(--clear) 92%,
+    var(--clear) 100%
+  );
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sky-gradient { transform: none !important; }
+}
+
+.kicker {
+  font-family: var(--font-panchang);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+.btn-torch {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  background: var(--torch);
+  color: #fff;
+  font-weight: 700;
+  padding: 1rem 2rem;
+  border-radius: 4px;
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+.btn-torch:hover { transform: translateY(-2px); background: #e64a12; box-shadow: 0 12px 34px rgba(255,90,31,0.35); }
+
+.btn-outline-light {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  border: 1.5px solid rgba(238,241,243,0.45);
+  color: var(--bone);
+  font-weight: 600;
+  padding: 0.95rem 1.9rem;
+  border-radius: 4px;
+  transition: border-color 0.2s ease;
+}
+.btn-outline-light:hover { border-color: var(--bone); }
+
+/* ─── Severity scale ────────────────────────────────────────── */
+.sev-row {
+  display: grid;
+  grid-template-columns: minmax(72px, 96px) 1fr;
+  gap: clamp(1rem, 3vw, 2.2rem);
+  padding: clamp(1.5rem, 3.5vw, 2.4rem) 0;
+  border-bottom: 1px solid var(--line-dark);
+  align-items: start;
+}
+.sev-badge {
+  font-family: var(--font-panchang);
+  font-weight: 700;
+  font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+  line-height: 1;
+  padding-top: 0.15rem;
+}
+.sev-track {
+  display: flex; gap: 4px; margin-top: 0.6rem;
+}
+.sev-tick { width: 14px; height: 5px; border-radius: 2px; background: rgba(238,241,243,0.18); }
+.sev-tick.on { background: var(--torch); }
+
+/* ─── Map ───────────────────────────────────────────────────── */
+.map-frame { position: relative; overflow: hidden; border-radius: 6px; border: 1px solid var(--line-light); }
+.map-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
+.map-frame::after {
+  content: "";
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to top, rgba(16,22,28,0.22), transparent 40%), rgba(51,82,107,0.08);
+}
+
+/* ─── Fixed call pill (collapses to circle on phones) ───────── */
+.callpill {
+  position: fixed; bottom: 1.3rem; right: 1.3rem; z-index: 100;
+  display: inline-flex; align-items: center; gap: 0.55rem;
+  background: var(--torch); color: #fff;
+  border-radius: 999px; padding: 0.9rem 1.35rem;
+  font-weight: 700; font-size: 0.95rem; text-decoration: none;
+  box-shadow: 0 12px 34px -8px rgba(13,17,22,0.55);
+}
+@media (max-width: 480px) {
+  .callpill { width: 48px; height: 48px; padding: 0; justify-content: center; border-radius: 50%; }
+  .callpill-label { display: none; }
+}
+
+/* ─── Reveal ────────────────────────────────────────────────── */
+.rv { opacity: 0; transform: translateY(26px); transition: opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1); }
+.rv.rv-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .rv { opacity: 1; transform: none; } }
