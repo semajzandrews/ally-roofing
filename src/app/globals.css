@@ -153,6 +153,99 @@ h1, h2, h3, .display {
   background: linear-gradient(to top, rgba(16,22,28,0.22), transparent 40%), rgba(51,82,107,0.08);
 }
 
+/* ─── Call OR Text chooser ──────────────────────────────────────
+   Styled as an extension of the severity scale: square 4px corners,
+   nimbus panel, Panchang uppercase labels, torch ticks marking each
+   row the way the scale marks a warning level. Root is .cot, never
+   .wrap — a global page container would throw it off-screen. ───── */
+.cot { position: relative; display: inline-flex; }
+.cot-trigger { cursor: pointer; }
+
+.cot-trigger-nav {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: var(--torch); color: #fff;
+  border-radius: 999px; padding: 0.5rem 1rem;
+  font-size: 0.875rem; font-weight: 700;
+}
+
+.cot-trigger-fab {
+  display: inline-flex; align-items: center; gap: 0.55rem;
+  background: var(--torch); color: #fff;
+  border-radius: 999px; padding: 0.9rem 1.35rem;
+  font-weight: 700; font-size: 0.95rem;
+  box-shadow: 0 12px 34px -8px rgba(13, 17, 22, 0.55);
+}
+
+.cot-menu {
+  position: absolute; top: calc(100% + 10px); right: 0; z-index: 120;
+  width: max-content; min-width: 268px; max-width: min(320px, calc(100vw - 2rem));
+  background: var(--nimbus-2);
+  border: 1px solid rgba(238, 241, 243, 0.16);
+  border-left: 3px solid var(--torch);
+  border-radius: 4px;
+  padding: 5px;
+  display: grid; gap: 2px;
+  opacity: 0; transform: translateY(-8px); pointer-events: none;
+  box-shadow: 0 22px 50px -18px rgba(13, 17, 22, 0.85);
+  transition: opacity .26s cubic-bezier(.22,1,.36,1), transform .26s cubic-bezier(.22,1,.36,1);
+}
+.cot-up .cot-menu { top: auto; bottom: calc(100% + 10px); transform: translateY(8px); }
+.cot-menu[data-open="true"] { opacity: 1; transform: none; pointer-events: auto; }
+
+.cot-menu a {
+  display: grid; grid-template-columns: auto 1fr auto;
+  align-items: center; gap: 0.85rem;
+  padding: 0.75rem 0.8rem;
+  color: var(--bone); text-decoration: none;
+  border-radius: 2px;
+  transition: background .25s ease, color .25s ease;
+}
+.cot-menu a:hover { background: rgba(255, 90, 31, 0.14); color: var(--torch-hi); }
+
+.cot-copy strong {
+  display: block;
+  font-family: var(--font-panchang), system-ui, sans-serif;
+  font-weight: 700; font-size: 0.8rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+}
+.cot-copy em {
+  display: block; font-style: normal;
+  font-size: 0.78rem; line-height: 1.35;
+  color: var(--bone-dim); margin-top: 3px;
+}
+
+.cot-ticks { display: grid; gap: 3px; }
+.cot-ticks i { display: block; width: 5px; height: 12px; border-radius: 1px; background: rgba(238,241,243,0.18); }
+.cot-ticks i.on { background: var(--torch); }
+
+/* Under 560px the trigger collapses to a bare icon so it can never
+   overflow a 375px viewport. */
+@media (max-width: 559px) {
+  .cot-trigger-nav { padding: 0.55rem; }
+  .cot-trigger-nav .cot-label { display: none; }
+}
+
+/* the fixed bottom-right chooser, collapsing to a circle on phones */
+.cot-fixed { position: fixed; bottom: 1.3rem; right: 1.3rem; z-index: 100; }
+@media (max-width: 480px) {
+  .cot-trigger-fab {
+    width: 48px; height: 48px; padding: 0;
+    justify-content: center; border-radius: 50%;
+  }
+  .cot-trigger-fab .cot-label { display: none; }
+}
+
+.btn-outline-ink {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  border: 1.5px solid rgba(16, 22, 28, 0.32);
+  color: var(--ink);
+  font-weight: 600;
+  padding: 0.95rem 1.9rem;
+  border-radius: 4px;
+  transition: border-color .2s ease, background .2s ease;
+}
+.btn-outline-ink:hover { border-color: var(--ink); background: rgba(16,22,28,0.05); }
+
 /* ─── Fixed call pill (collapses to circle on phones) ───────── */
 .callpill {
   position: fixed; bottom: 1.3rem; right: 1.3rem; z-index: 100;

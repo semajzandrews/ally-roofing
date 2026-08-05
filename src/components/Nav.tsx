@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-const PHONE = "(862) 263-2675";
-const TEL = "tel:+18622632675";
+import CallOrText from "./CallOrText";
+import { site } from "@/lib/site";
 
 /* Nav rides the sky: light text while the page is dark (first ~55% of
    scroll), flips to ink once the sky has lifted. Driven by the same
@@ -62,25 +61,12 @@ export default function Nav() {
           <a href="#proof" className="transition-opacity hover:opacity-60">The Work</a>
           <a href="#visit" className="transition-opacity hover:opacity-60">Visit</a>
         </div>
-        <a
-          href={TEL}
-          className="inline-flex items-center gap-2 rounded-full bg-torch px-4 py-2 text-sm font-bold text-white"
-        >
-          <PhoneIcon />
-          <span className="hidden sm:inline">{PHONE}</span>
-        </a>
+        <CallOrText
+          phone={site.phone}
+          smsBody={site.smsBody}
+          trigger="nav"
+        />
       </nav>
     </header>
-  );
-}
-
-function PhoneIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path
-        d="M6.6 3h2.9l1.4 4.1-2 1.5a13.6 13.6 0 0 0 6.5 6.5l1.5-2 4.1 1.4v2.9c0 1-.8 1.8-1.8 1.8C10.7 19.2 4.8 13.3 4.8 4.8 4.8 3.8 5.6 3 6.6 3Z"
-        fill="currentColor"
-      />
-    </svg>
   );
 }

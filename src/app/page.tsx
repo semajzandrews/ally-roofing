@@ -4,9 +4,11 @@ import Sky from "@/components/Sky";
 import Rain from "@/components/Rain";
 import Reveal from "@/components/Reveal";
 import SmoothScroll from "@/components/SmoothScroll";
+import CallOrText from "@/components/CallOrText";
+import { site } from "@/lib/site";
 
-const PHONE = "(862) 263-2675";
-const TEL = "tel:+18622632675";
+const PHONE = site.phone;
+const TEL = site.telHref;
 const ADDRESS = "326 Glenwood Ave Suite 3, Bloomfield, NJ 07003";
 
 /* Services as a weather-service severity scale — every roofing problem
@@ -57,16 +59,15 @@ export default function Home() {
       <SmoothScroll />
       <Nav />
 
-      {/* fixed call CTA */}
-      <a href={TEL} className="callpill" aria-label={`Call Ally Roofing at ${PHONE}`}>
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path
-            d="M6.6 3h2.9l1.4 4.1-2 1.5a13.6 13.6 0 0 0 6.5 6.5l1.5-2 4.1 1.4v2.9c0 1-.8 1.8-1.8 1.8C10.7 19.2 4.8 13.3 4.8 4.8 4.8 3.8 5.6 3 6.6 3Z"
-            fill="currentColor"
-          />
-        </svg>
-        <span className="callpill-label">{PHONE}</span>
-      </a>
+      {/* fixed call CTA — chooser, because half these leads would rather
+          send a photo of the ceiling than dial */}
+      <CallOrText
+        phone={PHONE}
+        smsBody={site.smsBody}
+        trigger="fab"
+        up
+        className="cot-fixed"
+      />
 
       {/* ── ACT I: INSIDE THE STORM ─────────────────────────────── */}
       <section id="top" className="relative flex min-h-[100svh] items-end overflow-hidden">
@@ -108,7 +109,7 @@ export default function Home() {
           </Reveal>
           <Reveal delay={380}>
             <div className="mt-9 flex flex-wrap gap-4">
-              <a href={TEL} className="btn-torch">Call now — {PHONE}</a>
+              <CallOrText phone={PHONE} smsBody={site.smsBody} label={`Call or text — ${PHONE}`} />
               <a href="#severity" className="btn-outline-light">How bad is it?</a>
             </div>
           </Reveal>
@@ -152,9 +153,12 @@ export default function Home() {
                 rafters, down flashing, through insulation. We don&apos;t patch where
                 it landed. We climb up and find where it got in.
               </p>
-              <a href={TEL} className="btn-torch mt-8">
-                Chase the drop — call us
-              </a>
+              <CallOrText
+                phone={PHONE}
+                smsBody={site.smsBody}
+                label="Chase the drop — call or text"
+                className="mt-8"
+              />
             </Reveal>
           </div>
         </div>
@@ -251,7 +255,12 @@ export default function Home() {
                     {PHONE}
                   </a>
                 </div>
-                <a href={TEL} className="btn-torch w-fit">Call for an inspection</a>
+                <CallOrText
+                  phone={PHONE}
+                  smsBody={site.smsBody}
+                  variant="inline"
+                  className="mt-1"
+                />
               </div>
             </Reveal>
             <Reveal delay={140}>
